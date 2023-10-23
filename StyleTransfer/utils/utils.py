@@ -16,7 +16,11 @@ IMAGENET_STD_NEUTRAL = [1, 1, 1]
 #
 # Image manipulation util functions
 #
+<<<<<<< HEAD
 
+=======
+# 读取路径的图像，并把像素亮度调整到[0,1]
+>>>>>>> fffec78 (style transfer)
 def load_image(img_path, target_shape=None):
     if not os.path.exists(img_path):
         raise Exception(f'Path does not exist: {img_path}')
@@ -38,9 +42,15 @@ def load_image(img_path, target_shape=None):
 
 
 def prepare_img(img_path, target_shape, device):
+<<<<<<< HEAD
     # 读取图片文件
     img = load_image(img_path, target_shape=target_shape)
     # 对图片进行normalize
+=======
+    img = load_image(img_path, target_shape=target_shape)
+
+    # 进行归一化
+>>>>>>> fffec78 (style transfer)
     # normalize using ImageNet's mean
     # [0, 255] range worked much better for me than [0, 1] range (even though PyTorch models were trained on latter)
     transform = transforms.Compose([

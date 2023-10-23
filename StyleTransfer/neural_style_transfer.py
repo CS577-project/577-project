@@ -10,6 +10,7 @@ import argparse
 
 
 def build_loss(neural_net, optimizing_img, target_representations, content_feature_maps_index, style_feature_maps_indices, config):
+<<<<<<< HEAD
     # content 
     target_content_representation = target_representations[0]
     # style
@@ -20,6 +21,14 @@ def build_loss(neural_net, optimizing_img, target_representations, content_featu
     # content对应的卷积层
     current_content_representation = current_set_of_feature_maps[content_feature_maps_index].squeeze(axis=0)
     # 使用mse loss，对比生成图的feature map和原图的feature map的差异
+=======
+    target_content_representation = target_representations[0]
+    target_style_representation = target_representations[1]
+
+    current_set_of_feature_maps = neural_net(optimizing_img)
+
+    current_content_representation = current_set_of_feature_maps[content_feature_maps_index].squeeze(axis=0)
+>>>>>>> fffec78 (style transfer)
     content_loss = torch.nn.MSELoss(reduction='mean')(target_content_representation, current_content_representation)
 
     style_loss = 0.0
@@ -51,6 +60,7 @@ def make_tuning_step(neural_net, optimizer, target_representations, content_feat
 
 
 def neural_style_transfer(config):
+<<<<<<< HEAD
     # 内容图片路径
     content_img_path = os.path.join(config['content_images_dir'], config['content_img_name'])
     # 风格图片路径
@@ -66,6 +76,23 @@ def neural_style_transfer(config):
     content_img = utils.prepare_img(content_img_path, config['height'], device)
     style_img = utils.prepare_img(style_img_path, config['height'], device)
     # 生成图有两种做法，一种是这个生成图就初始化为内容图的原图，这样就可以让生成图从原图开始变化，另一种就是随机噪声了
+=======
+    # 内容图的路径
+    content_img_path = os.path.join(config['content_images_dir'], config['content_img_name'])
+    # 风格图的路径
+    style_img_path = os.path.join(config['style_images_dir'], config['style_img_name'])
+    # 图像输出目录
+    out_dir_name = 'combined_' + os.path.split(content_img_path)[1].split('.')[0] + '_' + os.path.split(style_img_path)[1].split('.')[0]    
+    dump_path = os.path.join(config['output_img_dir'], out_dir_name)
+    os.makedirs(dump_path, exist_ok=True)
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # 读取内容图像
+    content_img = utils.prepare_img(content_img_path, config['height'], device)
+    # 读取风格图像
+    style_img = utils.prepare_img(style_img_path, config['height'], device)
+    # 初始化噪音图，尺寸与内容图一致
+>>>>>>> fffec78 (style transfer)
     if config['init_method'] == 'random':
         # white_noise_img = np.random.uniform(-90., 90., content_img.shape).astype(np.float32)
         gaussian_noise_img = np.random.normal(loc=0, scale=90., size=content_img.shape).astype(np.float32)
@@ -77,6 +104,7 @@ def neural_style_transfer(config):
         # feature maps need to be of same size for content image and init image
         style_img_resized = utils.prepare_img(style_img_path, np.asarray(content_img.shape[2:]), device)
         init_img = style_img_resized
+<<<<<<< HEAD
     # 这张生成图，是可学习的
     # we are tuning optimizing_img's pixels! (that's why requires_grad=True)
     optimizing_img = Variable(init_img, requires_grad=True)
@@ -87,6 +115,18 @@ def neural_style_transfer(config):
     content_img_set_of_feature_maps = neural_net(content_img)
     style_img_set_of_feature_maps = neural_net(style_img)
     # 我们使用特定层的feature map作为content representation
+=======
+    # 该噪音图是可训练的，目的是把噪音图训练为我们要的图
+    # we are tuning optimizing_img's pixels! (that's why requires_grad=True)
+    optimizing_img = Variable(init_img, requires_grad=True)
+
+    neural_net, content_feature_maps_index_name, style_feature_maps_indices_names = utils.prepare_model(config['model'], device)
+    print(f'Using {config["model"]} in the optimization procedure.')
+
+    content_img_set_of_feature_maps = neural_net(content_img)
+    style_img_set_of_feature_maps = neural_net(style_img)
+
+>>>>>>> fffec78 (style transfer)
     target_content_representation = content_img_set_of_feature_maps[content_feature_maps_index_name[0]].squeeze(axis=0)
     target_style_representation = [utils.gram_matrix(x) for cnt, x in enumerate(style_img_set_of_feature_maps) if cnt in style_feature_maps_indices_names[0]]
     target_representations = [target_content_representation, target_style_representation]
