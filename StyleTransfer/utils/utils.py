@@ -6,7 +6,7 @@ import os
 import matplotlib.pyplot as plt
 
 
-from models.definitions.vgg_nets import Vgg16, Vgg19, Vgg16Experimental
+from Model.vgg_nets import Vgg16, Vgg19, Vgg16Experimental
 
 
 IMAGENET_MEAN_255 = [123.675, 116.28, 103.53]
@@ -16,11 +16,7 @@ IMAGENET_STD_NEUTRAL = [1, 1, 1]
 #
 # Image manipulation util functions
 #
-<<<<<<< HEAD
-
-=======
 # 读取路径的图像，并把像素亮度调整到[0,1]
->>>>>>> fffec78 (style transfer)
 def load_image(img_path, target_shape=None):
     if not os.path.exists(img_path):
         raise Exception(f'Path does not exist: {img_path}')
@@ -42,15 +38,9 @@ def load_image(img_path, target_shape=None):
 
 
 def prepare_img(img_path, target_shape, device):
-<<<<<<< HEAD
-    # 读取图片文件
+    # 读取图片文件 (3, width, height)
     img = load_image(img_path, target_shape=target_shape)
-    # 对图片进行normalize
-=======
-    img = load_image(img_path, target_shape=target_shape)
-
-    # 进行归一化
->>>>>>> fffec78 (style transfer)
+    # 对图片进行normalize，先乘255，再做标准化
     # normalize using ImageNet's mean
     # [0, 255] range worked much better for me than [0, 1] range (even though PyTorch models were trained on latter)
     transform = transforms.Compose([
@@ -58,8 +48,9 @@ def prepare_img(img_path, target_shape, device):
         transforms.Lambda(lambda x: x.mul(255)),
         transforms.Normalize(mean=IMAGENET_MEAN_255, std=IMAGENET_STD_NEUTRAL)
     ])
-
-    img = transform(img).to(device).unsqueeze(0)
+    img = transform(img).to(device)
+    # 这里加了个维度
+    img = img.unsqueeze(0)
 
     return img
 

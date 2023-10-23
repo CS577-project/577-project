@@ -68,10 +68,12 @@ def neural_style_transfer(config):
     style_img = utils.prepare_img(style_img_path, config['height'], device)
     # 初始化噪音图，尺寸与内容图一致
     if config['init_method'] == 'random':
+        # 使用白噪音
         # white_noise_img = np.random.uniform(-90., 90., content_img.shape).astype(np.float32)
         gaussian_noise_img = np.random.normal(loc=0, scale=90., size=content_img.shape).astype(np.float32)
         init_img = torch.from_numpy(gaussian_noise_img).float().to(device)
     elif config['init_method'] == 'content':
+        # 这里直接拿content image当生成图的初始值了
         init_img = content_img
     else:
         # init image has same dimension as content image - this is a hard constraint
