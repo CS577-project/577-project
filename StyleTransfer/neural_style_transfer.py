@@ -50,6 +50,25 @@ def make_tuning_step(neural_net, optimizer, target_representations, content_feat
     # Returns the function that will be called inside the tuning loop
     return tuning_step
 
+def ConfigureDevice():
+    '''
+    这里可以同时支持cuda和mps
+    '''
+    device = torch.device("cpu")
+    if torch.cuda.is_available():
+        device = torch.device("cuda:0")
+    elif torch.has_mps:
+        if not torch.backends.mps.is_available():
+            if not torch.backends.mps.is_built():
+                print("MPS not available because the current PyTorch install was not "
+                    "built with MPS enabled.")
+            else:
+                print("MPS not available because the current MacOS version is not 12.3+ "
+                    "and/or you do not have an MPS-enabled device on this machine.")
+        else:
+            device = torch.device("mps")
+    print("device:" + str(device))
+    return device
 
 def neural_style_transfer(config):
     # 内容图的路径
@@ -61,7 +80,7 @@ def neural_style_transfer(config):
     dump_path = os.path.join(config['output_img_dir'], out_dir_name)
     os.makedirs(dump_path, exist_ok=True)
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = ConfigureDevice()
     # 读取内容图像
     content_img = utils.prepare_img(content_img_path, config['height'], device)
     # 读取风格图像
@@ -174,7 +193,7 @@ if __name__ == "__main__":
     # adam, content init -> (cw, sw, tv, lr) = (1e5, 1e5, 1e-1, 1e1)
     # adam, style   init -> (cw, sw, tv, lr) = (1e5, 1e2, 1e-1, 1e1)
     # adam, random  init -> (cw, sw, tv, lr) = (1e5, 1e2, 1e-1, 1e1)
-
+    # 所有参数打包到config结构里
     # just wrapping settings into a dictionary
     optimization_config = dict()
     for arg in vars(args):
