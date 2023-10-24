@@ -130,6 +130,9 @@ def prepare_model(model, device):
 
 
 def gram_matrix(x, should_normalize=True):
+    '''
+    构造gram matrix
+    '''
     (b, ch, h, w) = x.size()
     features = x.view(b, ch, w * h)
     features_t = features.transpose(1, 2)
