@@ -41,7 +41,9 @@ def make_tuning_step(model, optimizer, target_representation, should_reconstruct
 
 
 def reconstruct_image_from_representation(config):
+    # 是否重建content
     should_reconstruct_content = config['should_reconstruct_content']
+    # 是否可视化representation
     should_visualize_representation = config['should_visualize_representation']
     dump_path = os.path.join(config['output_img_dir'], ('c' if should_reconstruct_content else 's') + '_reconstruction_' + config['optimizer'])
     dump_path = os.path.join(dump_path, os.path.basename(config['content_img_name']).split('.')[0] if should_reconstruct_content else os.path.basename(config['style_img_name']).split('.')[0])
