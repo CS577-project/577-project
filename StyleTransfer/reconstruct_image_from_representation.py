@@ -45,23 +45,26 @@ def reconstruct_image_from_representation(config):
     should_reconstruct_content = config['should_reconstruct_content']
     # 是否可视化representation
     should_visualize_representation = config['should_visualize_representation']
+    # 输出目录
     dump_path = os.path.join(config['output_img_dir'], ('c' if should_reconstruct_content else 's') + '_reconstruction_' + config['optimizer'])
     dump_path = os.path.join(dump_path, os.path.basename(config['content_img_name']).split('.')[0] if should_reconstruct_content else os.path.basename(config['style_img_name']).split('.')[0])
     os.makedirs(dump_path, exist_ok=True)
-
+    # content图和style图的路径
     content_img_path = os.path.join(config['content_images_dir'], config['content_img_name'])
     style_img_path = os.path.join(config['style_images_dir'], config['style_img_name'])
     img_path = content_img_path if should_reconstruct_content else style_img_path
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+    # 读取图像
     img = utils.prepare_img(img_path, config['height'], device)
-
+    # 噪音图
     gaussian_noise_img = np.random.normal(loc=0, scale=90., size=img.shape).astype(np.float32)
     white_noise_img = np.random.uniform(-90., 90., img.shape).astype(np.float32)
+    # 初始图使用噪音图，初始图是可学习的
     init_img = torch.from_numpy(white_noise_img).float().to(device)
     optimizing_img = Variable(init_img, requires_grad=True)
 
+    # 读取预训练网络vgg
     # indices pick relevant feature maps (say conv4_1, relu1_1, etc.)
     neural_net, content_feature_maps_index_name, style_feature_maps_indices_names = utils.prepare_model(config['model'], device)
 

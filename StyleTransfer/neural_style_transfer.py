@@ -158,10 +158,12 @@ if __name__ == "__main__":
     #
     # fixed args - don't change these unless you have a good reason
     #
-    default_resource_dir = os.path.join(os.path.dirname(__file__), 'data')
+    default_resource_dir = os.path.join(os.path.dirname(__file__), "..", "Images")
     content_images_dir = os.path.join(default_resource_dir, 'content-images')
     style_images_dir = os.path.join(default_resource_dir, 'style-images')
-    output_img_dir = os.path.join(default_resource_dir, 'output-images')
+    
+    output_img_dir = os.path.join(default_resource_dir, 'styletransfer-output')
+    
     img_format = (4, '.jpg')  # saves images in the format: %04d.jpg
 
     #
@@ -170,7 +172,7 @@ if __name__ == "__main__":
     #
     parser = argparse.ArgumentParser()
     parser.add_argument("--content_img_name", type=str, help="content image name", default='Base_Face_D.jpg')
-    parser.add_argument("--style_img_name", type=str, help="style image name", default='giger_crop.jpg')
+    parser.add_argument("--style_img_name", type=str, help="style image name", default='vg_olive.jpg')
     parser.add_argument("--height", type=int, help="height of content and style images", default=400)
 
     parser.add_argument("--content_weight", type=float, help="weight factor for content loss", default=1e5)
