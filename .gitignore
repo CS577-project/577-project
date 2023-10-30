@@ -10,3 +10,6 @@ obj
 ProjectSettings
 UserSettings
 .vsconfig
+.suo
+.vsidx
+.vs
