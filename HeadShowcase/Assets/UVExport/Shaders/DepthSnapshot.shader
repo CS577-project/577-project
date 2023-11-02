@@ -1,8 +1,5 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader"Custom/ExportUV"
+Shader"Custom/DepthSnapshot"
 {
     SubShader
     {
@@ -28,12 +25,12 @@ Shader"Custom/ExportUV"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.pos);
-                UNITY_TRANSFER_DEPTH(o.depth);
+                o.depth = o.pos.z;
                 return o;
             }
             float4 frag(v2f i) : SV_TARGET
             {
-                UNITY_OUTPUT_DEPTH(i.depth);
+                return float4(i.depth, 0, 0, 1);
             }
             ENDCG
         }
