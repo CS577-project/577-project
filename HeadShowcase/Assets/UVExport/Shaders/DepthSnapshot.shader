@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 
 Shader"Custom/DepthSnapshot"
 {
@@ -17,7 +19,6 @@ Shader"Custom/DepthSnapshot"
             struct v2f
             {
                 float4 pos : POSITION;
-                float depth : TEXCOORD0;
             };
             
 
@@ -25,12 +26,12 @@ Shader"Custom/DepthSnapshot"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.pos);
-                o.depth = o.pos.z;
                 return o;
             }
-            float4 frag(v2f i) : SV_TARGET
+            float frag(v2f i) : SV_TARGET
             {
-                return float4(i.depth, 0, 0, 1);
+                float depth = i.pos.w / 10.0f;
+                return Linear01Depth(depth);
             }
             ENDCG
         }

@@ -29,10 +29,10 @@ public class UVExporter : MonoBehaviour
         Camera cam = GetComponent<Camera>();
         if (cam != null) 
         {
-            Material mat_before = HeadMesh.material;
+            Material mat_before = HeadMesh.sharedMaterial;
             SnapshotUV(cam);
             SnapshotBase(cam);
-            HeadMesh.material = mat_before;
+            HeadMesh.sharedMaterial = mat_before;
             AssetDatabase.Refresh();
         }
     }

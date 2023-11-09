@@ -1,10 +1,11 @@
-Shader"Hidden/SynthesizeStyle"
+Shader"Custom/SynthesizeStyle"
 {
     Properties
     {
         _UVMapImage("Texture", 2D) = "black" {}
         _StyleImage("Texture", 2D) = "black" {}
         _MainTex ("Texture", 2D) = "white" {}
+        _DepthTex("Texture", 2D) = "black" {}
     }
     SubShader
     {
@@ -38,7 +39,7 @@ Shader"Hidden/SynthesizeStyle"
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex = float4(v.uv, 0.0f, 1.0f);
                 o.uv = v.uv;
                 return o;
             }
@@ -46,14 +47,15 @@ Shader"Hidden/SynthesizeStyle"
             sampler2D _MainTex;
             sampler2D _UVMapImage;
             sampler2D _StyleImage;
+            sampler2D _DepthImage;
             
             float4 frag (v2f i) : SV_Target
             {
                 // 从uv map中获得当前uv坐标，这个坐标是展开纹理后的坐标
-                float4 uv_info = tex2D(_UVMapImage, i.uv);
+                //float4 uv_info = tex2D(_UVMapImage, i.uv);
                 
-                float4 style_color = tex2D(_StyleImage, uv_info.xy);
-                return float4(1,1,1,1);
+                //float4 style_color = tex2D(_StyleImage, uv_info.xy);
+                return float4(i.uv, 0.0f, 1.0f);
             }
             ENDCG
         }
