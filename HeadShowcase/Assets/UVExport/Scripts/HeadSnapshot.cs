@@ -4,10 +4,8 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class UVExporter : MonoBehaviour
+public class HeadSnapshot : MonoBehaviour
 {
-    public RenderTexture UVRT;
-    public Material UVMaterial;
     public Material BaseColorMaterial;
     public RenderTexture BaseColorRT;
     public MeshRenderer HeadMesh;
@@ -30,37 +28,22 @@ public class UVExporter : MonoBehaviour
         if (cam != null) 
         {
             Material mat_before = HeadMesh.sharedMaterial;
-            SnapshotUV(cam);
-            SnapshotBase(cam);
+            SnapshotBaseColor(cam);
             HeadMesh.sharedMaterial = mat_before;
             AssetDatabase.Refresh();
         }
     }
-    private void SnapshotUV( Camera cam )
+    private void SnapshotBaseColor( Camera cam )
     {
-        HeadMesh.material = UVMaterial;
-        cam.targetTexture = UVRT;
-        cam.Render();
-        RenderTexture.active = UVRT;
-        Texture2D tex = new Texture2D(cam.targetTexture.width, cam.targetTexture.height);
-        tex.ReadPixels(new Rect(0, 0, UVRT.width, UVRT.height), 0, 0);
-        RenderTexture.active = null;
-        byte[] bytes = tex.EncodeToPNG();
-        File.WriteAllBytes(ExportPath + "/HeadUV.png", bytes);
-        GameObject.DestroyImmediate(tex);
-
-    }
-    private void SnapshotBase( Camera cam )
-    {
-        HeadMesh.material = BaseColorMaterial;
+        HeadMesh.sharedMaterial = BaseColorMaterial;
         cam.targetTexture = BaseColorRT;
         cam.Render();
         RenderTexture.active = BaseColorRT;
         Texture2D tex = new Texture2D(cam.targetTexture.width, cam.targetTexture.height);
         tex.ReadPixels(new Rect(0, 0, BaseColorRT.width, BaseColorRT.height), 0, 0);
         RenderTexture.active = null;
-        byte[] bytes = tex.EncodeToPNG();
-        File.WriteAllBytes(ExportPath + "/HeadBase.png", bytes);
+        byte[] bytes = tex.EncodeToJPG();
+        File.WriteAllBytes(ExportPath + "/HeadBase.jpg", bytes);
         GameObject.DestroyImmediate(tex);
 
     }

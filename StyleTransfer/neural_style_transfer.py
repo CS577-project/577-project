@@ -160,7 +160,7 @@ if __name__ == "__main__":
     #
     default_resource_dir = os.path.join(os.path.dirname(__file__), "..", "Images")
     content_images_dir = os.path.join(default_resource_dir, 'content-images')
-    style_images_dir = os.path.join(default_resource_dir, '动画')
+    style_images_dir = os.path.join(default_resource_dir, 'cartoon')
     
     output_img_dir = os.path.join(default_resource_dir, 'styletransfer-output')
     

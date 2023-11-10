@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(UVExporter))]
-public class UVExporterEditor : Editor
+[CustomEditor(typeof(HeadSynthesize))]
+public class HeadSynthesizeEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        UVExporter myTarget = (UVExporter)target;
+        HeadSynthesize myTarget = (HeadSynthesize)target;
 
         // Draw the default inspector.
         DrawDefaultInspector();
 
         // Add a button to the Inspector.
-        if (GUILayout.Button("Custom Function"))
+        if (GUILayout.Button("Do Synthesize"))
         {
-            myTarget.SnaptShot();
+            myTarget.Synthesize();
         }
     }
 }

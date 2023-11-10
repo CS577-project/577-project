@@ -2,7 +2,6 @@ Shader"Custom/SynthesizeStyle"
 {
     Properties
     {
-        _UVMapImage("Texture", 2D) = "black" {}
         _StyleImage("Texture", 2D) = "black" {}
         _MainTex ("Texture", 2D) = "white" {}
         _DepthTex("Texture", 2D) = "black" {}
@@ -30,14 +29,11 @@ Shader"Custom/SynthesizeStyle"
             {
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
+                float4 posInClip : TEXCOORD1;
             };
 
-            /// �����mesh���Դ���mesh�����Ƶ���һ��ȫ����quad
-            /// ����չuv�ķ�ʽ���Դ�mesh�任�ɸ�ȫ��quad����base������ϣ�����pixel shader������Ե�ǰλ����ɫ��
-            /// ���⵱ǰ����λ��ҲҪ
-            /// �����������Ƶķ�ʽ�任���������ܵõ���װ������λ����ɫ��Ӧ�û�����Ļ���ĸ�λ���ϣ��Ӷ������ϳ�ͼ
-            /// unwrap the mesh to the clip space
-            /// 
+            /// unwrap the mesh to the clip space by uv
+            /// calculate the position of clip space, and save it to posInClip 
             v2f vert (appdata v)
             {
                 v2f o;
@@ -45,24 +41,21 @@ Shader"Custom/SynthesizeStyle"
                 float4 pos = UnityObjectToClipPos(v.vertex);
                 o.vertex = float4(v.uv * 2 - float2(1,1), 1, 1);
                 o.vertex.y *= -1;
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);     
-                
+                o.uv = v.uv;
+                o.posInClip = pos;
                 return o;
             }
 
-            sampler2D _MainTex;
-            sampler2D _UVMapImage;
             sampler2D _StyleImage;
             sampler2D _DepthImage;
-            
+            // transform the lerped pos in clip to uv, and sample from Style Image
             float4 frag (v2f i) : SV_Target
             {
-                // ��uv map�л�õ�ǰuv���꣬���������չ������������
-                //float4 uv_info = tex2D(_UVMapImage, i.uv);
-                
-                
-                //float4 style_color = tex2D(_StyleImage, uv_info.xy);
-                return float4(i.uv, 0.0f, 1.0f);
+                // posInClip:[-1,1] -> [0,1]
+                float2 uv = i.posInClip + float2(1, 1) * 0.5;
+                uv.y *= -1;
+                float4 col = tex2D(_StyleImage, uv);
+                return col;
             }
             ENDCG
         }
