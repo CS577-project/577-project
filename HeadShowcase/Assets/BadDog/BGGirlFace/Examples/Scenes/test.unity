@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4514011, g: 0.5008941, b: 0.57234246, a: 1}
+  m_IndirectSpecularColor: {r: 0.45140058, g: 0.5008933, b: 0.57234126, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UVRT: {fileID: 8400000, guid: 2ef0d4d17a367454390cf6a2f661c1de, type: 2}
   UVMaterial: {fileID: 2100000, guid: ecb10f90f3ac0a14abe16cf4e0068160, type: 2}
-  BaseColorMaterial: {fileID: 2100000, guid: 874f0128d3bf2294bb516e5549108fc4, type: 2}
+  BaseColorMaterial: {fileID: 2100000, guid: c9ca4be90f8cd470e9fc700ca27be41b, type: 2}
   BaseColorRT: {fileID: 8400000, guid: 0624162a9f4ab5a469bb5ea19b8058c2, type: 2}
   HeadMesh: {fileID: 1977901654}
   ExportPath: Assets/UVExport/Output
@@ -431,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 330283210}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000327208, y: -0.99812645, z: -0.0053584776, w: -0.06094921}
-  m_LocalPosition: {x: 2.329, y: -0.016, z: 0.886}
+  m_LocalPosition: {x: 2.5694, y: -0.016, z: 0.9151}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -850,87 +850,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719980074}
   m_CullTransparentMesh: 0
---- !u!21 &885341545
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: DepthSnapshotMat (Instance)
-  m_Shader: {fileID: 4800000, guid: 3729ca3ae7a1b9445a6312afa602683d, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailAlbedoMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailMask:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _DetailNormalMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _OcclusionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _ParallaxMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _BumpScale: 1
-    - _Cutoff: 0.5
-    - _DetailNormalMapScale: 1
-    - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.5
-    - _GlossyReflections: 1
-    - _Metallic: 0
-    - _Mode: 0
-    - _OcclusionStrength: 1
-    - _Parallax: 0.02
-    - _SmoothnessTextureChannel: 0
-    - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _UVSec: 0
-    - _ZWrite: 1
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &970364553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1944,7 +1863,7 @@ PrefabInstance:
     - target: {fileID: 773630103219862080, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 885341545}
+      objectReference: {fileID: 2100000, guid: c9ca4be90f8cd470e9fc700ca27be41b, type: 2}
     - target: {fileID: 1333252914900487836, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_Name
       value: Face (1)
@@ -2294,6 +2213,10 @@ PrefabInstance:
     - target: {fileID: 1333252914900487836, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_Name
       value: Face
+      objectReference: {fileID: 0}
+    - target: {fileID: 1333252914900487836, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2655984337068178575, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_RootOrder

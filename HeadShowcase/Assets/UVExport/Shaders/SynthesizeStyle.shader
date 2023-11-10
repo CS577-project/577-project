@@ -28,19 +28,25 @@ Shader"Custom/SynthesizeStyle"
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
             };
 
-            /// ÊäÈëµÄmeshÊÇÄÔ´üµÄmesh£¬»æÖÆµÄÊÇÒ»¸öÈ«ÆÁµÄquad
-            /// °´ÕÕÕ¹uvµÄ·½Ê½½«ÄÔ´ümesh±ä»»³É¸öÈ«ÆÁquad£¬ºÍbaseÎÆÀí¶ÔÉÏ£¬ÕâÑùpixel shader²ÅÄÜÕë¶Ôµ±Ç°Î»ÖÃÌîÉ«£¬
-            /// ÁíÍâµ±Ç°¶¥µãÎ»ÖÃÒ²Òª
-            /// °´ÕÕÕý³£»æÖÆµÄ·½Ê½±ä»»£¬ÕâÑù²ÅÄÜµÃµ½¼Ù×°°´Õý³£Î»ÖÃ×ÅÉ«£¬Ó¦¸Ã»­ÔÚÆÁÄ»µÄÄÄ¸öÎ»ÖÃÉÏ£¬´Ó¶ø²ÉÑùºÏ³ÉÍ¼
+            /// ï¿½ï¿½ï¿½ï¿½ï¿½meshï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½meshï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½Ò»ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½quad
+            /// ï¿½ï¿½ï¿½ï¿½Õ¹uvï¿½Ä·ï¿½Ê½ï¿½ï¿½ï¿½Ô´ï¿½meshï¿½ä»»ï¿½É¸ï¿½È«ï¿½ï¿½quadï¿½ï¿½ï¿½ï¿½baseï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ï¿½ï¿½ï¿½ï¿½pixel shaderï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôµï¿½Ç°Î»ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½
+            /// ï¿½ï¿½ï¿½âµ±Ç°ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ò²Òª
+            /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆµÄ·ï¿½Ê½ï¿½ä»»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÜµÃµï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½Ó¦ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½Ä¸ï¿½Î»ï¿½ï¿½ï¿½Ï£ï¿½ï¿½Ó¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï³ï¿½Í¼
+            /// unwrap the mesh to the clip space
+            /// 
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = float4(v.uv, 0.0f, 1.0f);
-                o.uv = v.uv;
+                // unwrap UV to clip space
+                float4 pos = UnityObjectToClipPos(v.vertex);
+                o.vertex = float4(v.uv * 2 - float2(1,1), 1, 1);
+                o.vertex.y *= -1;
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);     
+                
                 return o;
             }
 
@@ -51,8 +57,9 @@ Shader"Custom/SynthesizeStyle"
             
             float4 frag (v2f i) : SV_Target
             {
-                // ´Óuv mapÖÐ»ñµÃµ±Ç°uv×ø±ê£¬Õâ¸ö×ø±êÊÇÕ¹¿ªÎÆÀíºóµÄ×ø±ê
+                // ï¿½ï¿½uv mapï¿½Ð»ï¿½Ãµï¿½Ç°uvï¿½ï¿½ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 //float4 uv_info = tex2D(_UVMapImage, i.uv);
+                
                 
                 //float4 style_color = tex2D(_StyleImage, uv_info.xy);
                 return float4(i.uv, 0.0f, 1.0f);
