@@ -11,7 +11,9 @@ Shader"Custom/SynthesizeStyle"
     SubShader
     {
         // No culling or depth
-        Cull Off ZWrite Off ZTest Always
+        Cull Off 
+        ZWrite Off 
+        ZTest Off
 
         Pass
         {
@@ -20,6 +22,7 @@ Shader"Custom/SynthesizeStyle"
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            
 
             struct appdata
             {
@@ -40,14 +43,14 @@ Shader"Custom/SynthesizeStyle"
             v2f vert (appdata v)
             {
                 v2f o;
-                // unwrap UV to clip space
-                float4 pos = UnityObjectToClipPos(v.vertex);
                 //float4 pos = UnityObjectToClipPos(v.vertex);
                 o.vertex = float4(v.uv * 2 - float2(1,1), 1, 1);
                 o.vertex.y *= -1;
                 o.uv = v.uv;
+                // unwrap UV to clip space
+                float4 pos = UnityObjectToClipPos(v.vertex);
                 o.posInClip = pos;
-                o.posInView = mul(UNITY_MATRIX_MV, v.vertex);
+                o.posInView = mul(UNITY_MATRIX_M, v.vertex);
 
                 return o;
             }
@@ -59,23 +62,24 @@ Shader"Custom/SynthesizeStyle"
             float4 frag (v2f i) : SV_Target
             {
                 // posInClip:[-1,1] -> [0,1]
-                float2 uv_2 = (mul(UNITY_MATRIX_P,i.posInView).xy + float2(1.0,1.0)) * 0.5;
+                float2 uv_2 = (mul(UNITY_MATRIX_VP,i.posInView).xy + float2(1.0,1.0)) * 0.5;
                 uv_2.y *= -1;
                 float2 uv = i.posInClip + float2(1, 1) * 0.5;
                 uv.y *= -1;
                 float4 col = tex2D(_StyleImage, uv_2);
-                float depth = i.posInClip.z / i.posInClip.w;
-                depth = Linear01Depth(depth);
-                float4 depthf4 = tex2D(_DepthImage, uv_2);                
-                float saved_depth = depthf4.r;
-                if(depth > saved_depth)
-                {
-                    return float4(1,0,0,1);                    
-                }
-                else
-                {
-                    return col;
-                }
+                //float depth = i.posInClip.z / i.posInClip.w;
+                //depth = Linear01Depth(depth);
+                //float4 depthf4 = tex2D(_DepthImage, uv_2);                
+                //float saved_depth = depthf4.r;
+                //if(depth > saved_depth)
+                //{
+                //    return float4(1,0,0,1);                    
+                //}
+                //else
+                //{
+                //    return col;
+                //}
+                return col;
                 
             }
             ENDCG

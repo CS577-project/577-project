@@ -9,7 +9,6 @@ public class HeadSnapshot : MonoBehaviour
     public Material BaseColorMaterial;
     public RenderTexture BaseColorRT;
     public MeshRenderer HeadMesh;
-    public string ExportPath;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +22,7 @@ public class HeadSnapshot : MonoBehaviour
     }
     public void SnaptShot()
     {
-        // �����õ���ǰ���
+        // do the snapshot via camera
         Camera cam = GetComponent<Camera>();
         if (cam != null) 
         {
@@ -38,14 +37,8 @@ public class HeadSnapshot : MonoBehaviour
         HeadMesh.sharedMaterial = BaseColorMaterial;
         cam.targetTexture = BaseColorRT;
         cam.Render();
-        RenderTexture.active = BaseColorRT;
-        Texture2D tex = new Texture2D(cam.targetTexture.width, cam.targetTexture.height);
-        tex.ReadPixels(new Rect(0, 0, BaseColorRT.width, BaseColorRT.height), 0, 0);
-        RenderTexture.active = null;
-        byte[] bytes = tex.EncodeToJPG();
-        File.WriteAllBytes(ExportPath + "/HeadBase.jpg", bytes);
-        GameObject.DestroyImmediate(tex);
-
+        string filepath = UtilFuncs.GetSaveDir("HeadBase.jpg");
+        UtilFuncs.SaveTexture(cam, BaseColorRT, filepath);
     }
    
 }

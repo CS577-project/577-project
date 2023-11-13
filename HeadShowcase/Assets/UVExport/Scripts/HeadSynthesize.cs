@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +17,9 @@ public class HeadSynthesize : MonoBehaviour
     public MeshRenderer HeadMesh;
 
     public Texture2D StylizedImage;
+
+    public Texture2D NewHeadTexture;
+    public Texture2D OrigHeadTexture;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +43,8 @@ public class HeadSynthesize : MonoBehaviour
             // now let's do the synthesize
             DoSynthesize(cam);
             // save the result
-            Save();
+            string filepath = UtilFuncs.GetSaveDir("HeadBaseUV.jpg");
+            UtilFuncs.SaveTexture(cam, SynthesizeRT, filepath);
             HeadMesh.sharedMaterial = mat_before;
 
             AssetDatabase.Refresh();
@@ -63,17 +68,19 @@ public class HeadSynthesize : MonoBehaviour
         
 
     }
-    private void Save()
+    public void ReplaceHeadTexture()
     {
-        // read back from render target
-        RenderTexture.active = SynthesizeRT;
-        Texture2D tex = new Texture2D(SynthesizeRT.width, SynthesizeRT.height);
-        tex.ReadPixels(new Rect(0, 0, SynthesizeRT.width, SynthesizeRT.height), 0, 0);
-        RenderTexture.active = null;
-
-        byte[] bytes = tex.EncodeToJPG();
-        File.WriteAllBytes(ExportPath + "/HeadBaseUV.jpg", bytes);
-        GameObject.DestroyImmediate(tex);
+        if(NewHeadTexture == null)
+        {
+            return;
+        }
+        OrigHeadTexture = (Texture2D)HeadMesh.sharedMaterial.GetTexture("_MainTex");
+        HeadMesh.sharedMaterial.SetTexture("_MainTex", NewHeadTexture);
     }
+    public void ResetHeadTexture()
+    {
+        HeadMesh.sharedMaterial.SetTexture("_MainTex", OrigHeadTexture);
+    }
+
 
 }

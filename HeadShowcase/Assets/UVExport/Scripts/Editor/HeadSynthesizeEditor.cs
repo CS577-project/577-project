@@ -16,5 +16,13 @@ public class HeadSynthesizeEditor : Editor
         {
             myTarget.Synthesize();
         }
+        if(GUILayout.Button("Replace Head Texture"))
+        {
+            myTarget.ReplaceHeadTexture();       
+        }
+        if(GUILayout.Button("Reset HeadTexture"))
+        {
+            myTarget.ResetHeadTexture();
+        }
     }
 }

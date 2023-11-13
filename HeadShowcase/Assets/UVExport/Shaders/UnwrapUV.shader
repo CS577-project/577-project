@@ -29,30 +29,29 @@ Shader "Custom/UnwrapUV"
 
             struct v2f
             {
-                float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+                float2 uv : TEXCOORD0;
             };
 
             sampler2D _MainTex;
-            float4 _MainTex_ST;
+            //float4 _MainTex_ST;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 
-                float4 pos = UnityObjectToClipPos(v.vertex);
+                //float4 pos = UnityObjectToClipPos(v.vertex);
                 o.vertex = float4(v.uv * 2 - float2(1,1), 1, 1);
                 o.vertex.y *= -1;
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);                
+                o.uv = v.uv;                
                 
                 return o;
             }
 
-            fixed4 frag (v2f i) : SV_Target
+            float4 frag (v2f i) : SV_Target
             {
                 // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-                col.a = 1;
+                float4 col = tex2D(_MainTex, i.uv);
                 
                 return col;
             }

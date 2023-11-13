@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140058, g: 0.5008933, b: 0.57234126, a: 1}
+  m_IndirectSpecularColor: {r: 0.4514011, g: 0.5008941, b: 0.57234246, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -347,6 +347,7 @@ GameObject:
   - component: {fileID: 330283212}
   - component: {fileID: 330283211}
   - component: {fileID: 330283214}
+  - component: {fileID: 330283215}
   m_Layer: 0
   m_Name: DepthCamera
   m_TagString: Untagged
@@ -369,7 +370,6 @@ MonoBehaviour:
   BaseColorMaterial: {fileID: 2100000, guid: eb6db8ef46e72ea4b8857f030f4ea92a, type: 2}
   BaseColorRT: {fileID: 8400000, guid: 0624162a9f4ab5a469bb5ea19b8058c2, type: 2}
   HeadMesh: {fileID: 1977901654}
-  ExportPath: Assets/UVExport/Output
 --- !u!20 &330283212
 Camera:
   m_ObjectHideFlags: 0
@@ -411,7 +411,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: bada6829e3faf43b9b2caf2c17073fee, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 217926d807bf1ed43b629e77f6ece344, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -455,6 +455,23 @@ MonoBehaviour:
   SynthesizeMaterial: {fileID: 2100000, guid: 874f0128d3bf2294bb516e5549108fc4, type: 2}
   HeadMesh: {fileID: 1977901654}
   StylizedImage: {fileID: 2800000, guid: 21917738b490bda4eae62c3593ba9091, type: 3}
+  NewHeadTexture: {fileID: 2800000, guid: 2ed3cec6e721a49758b520b1163b6fe5, type: 3}
+  OrigHeadTexture: {fileID: 2800000, guid: e9783b074ae57f545bb2d3da7958d820, type: 3}
+--- !u!114 &330283215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330283210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 949f6327ff5e13945bcd81ce31cdc7d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnwrapUVMaterial: {fileID: 2100000, guid: c9ca4be90f8cd470e9fc700ca27be41b, type: 2}
+  UnwrapUVRT: {fileID: 8400000, guid: 217926d807bf1ed43b629e77f6ece344, type: 2}
+  HeadMesh: {fileID: 1977901654}
 --- !u!1 &339482331
 GameObject:
   m_ObjectHideFlags: 0
