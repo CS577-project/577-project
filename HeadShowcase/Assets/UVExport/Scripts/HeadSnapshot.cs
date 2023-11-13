@@ -23,7 +23,7 @@ public class HeadSnapshot : MonoBehaviour
     }
     public void SnaptShot()
     {
-        // Ê×ÏÈÄÃµ½µ±Ç°Ïà»ú
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
         Camera cam = GetComponent<Camera>();
         if (cam != null) 
         {
@@ -47,11 +47,5 @@ public class HeadSnapshot : MonoBehaviour
         GameObject.DestroyImmediate(tex);
 
     }
-    /// <summary>
-    /// ¸ø¶¨Ò»ÕÅ¾­¹ýstyle transferµÄÁ³£¬°ÑËü»¹Ô­µ½uvÌùÍ¼ÉÏ
-    /// </summary>
-    public void UnwrapUV()
-    {
-
-    }
+   
 }

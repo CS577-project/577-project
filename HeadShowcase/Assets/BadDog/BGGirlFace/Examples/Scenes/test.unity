@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4514011, g: 0.5008941, b: 0.57234246, a: 1}
+  m_IndirectSpecularColor: {r: 0.45140058, g: 0.5008933, b: 0.57234126, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -411,7 +411,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 0624162a9f4ab5a469bb5ea19b8058c2, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: bada6829e3faf43b9b2caf2c17073fee, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -430,7 +430,7 @@ Transform:
   m_GameObject: {fileID: 330283210}
   serializedVersion: 2
   m_LocalRotation: {x: 0.000327208, y: -0.99812645, z: -0.0053584776, w: -0.06094921}
-  m_LocalPosition: {x: 2.362, y: -0.014, z: 0.657}
+  m_LocalPosition: {x: 2.363, y: -0.014, z: 0.647}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -448,11 +448,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7cf1661bdddee4795655e976253b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DepthRT: {fileID: 0}
-  DepthMaterial: {fileID: 0}
-  SynthesizeRT: {fileID: 0}
-  SynthesizeMaterial: {fileID: 0}
-  HeadMesh: {fileID: 0}
+  ExportPath: Assets/UVExport/Output
+  DepthRT: {fileID: 8400000, guid: 2ef0d4d17a367454390cf6a2f661c1de, type: 2}
+  DepthMaterial: {fileID: 2100000, guid: ecb10f90f3ac0a14abe16cf4e0068160, type: 2}
+  SynthesizeRT: {fileID: 8400000, guid: bada6829e3faf43b9b2caf2c17073fee, type: 2}
+  SynthesizeMaterial: {fileID: 2100000, guid: 874f0128d3bf2294bb516e5549108fc4, type: 2}
+  HeadMesh: {fileID: 1977901654}
+  StylizedImage: {fileID: 2800000, guid: 21917738b490bda4eae62c3593ba9091, type: 3}
 --- !u!1 &339482331
 GameObject:
   m_ObjectHideFlags: 0

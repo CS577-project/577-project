@@ -30,7 +30,7 @@ Shader"Custom/DepthSnapshot"
             }
             float frag(v2f i) : SV_TARGET
             {
-                float depth = i.pos.w;
+                float depth = i.pos.z / i.pos.w;
                 return Linear01Depth(depth);
             }
             ENDCG
