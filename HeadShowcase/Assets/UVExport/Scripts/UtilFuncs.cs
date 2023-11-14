@@ -3,10 +3,21 @@ using UnityEngine;
 
 public class UtilFuncs
 {
+    /// <summary>
+    /// get saving directory
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <returns></returns>
     public static string GetSaveDir( string filename )
     {
         return Path.Combine("Assets/UVExport/Output", filename);
     }
+    /// <summary>
+    /// save texture to file
+    /// </summary>
+    /// <param name="cam"></param>
+    /// <param name="rt"></param>
+    /// <param name="path"></param>
     public static void SaveTexture(Camera cam, RenderTexture rt, string path)
     {
         RenderTexture.active = rt;

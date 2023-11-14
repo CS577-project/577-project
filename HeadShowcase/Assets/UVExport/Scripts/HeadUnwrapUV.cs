@@ -23,7 +23,7 @@ public class HeadUnwrapUV : MonoBehaviour
     { 
            // do the snapshot via camera
         Camera cam = GetComponent<Camera>();
-        if (cam != null) 
+        if (cam != null)
         {
             Material mat_before = HeadMesh.sharedMaterial;
             Material UnwrapUVMaterial_Inst = GameObject.Instantiate(UnwrapUVMaterial);
@@ -31,11 +31,11 @@ public class HeadUnwrapUV : MonoBehaviour
             cam.targetTexture = UnwrapUVRT;
             cam.Render();
             HeadMesh.sharedMaterial = mat_before;
-            
+
             string filepath = UtilFuncs.GetSaveDir("UnwrappedFaceTexture.jpg");
             UtilFuncs.SaveTexture(cam, UnwrapUVRT, filepath);
             AssetDatabase.Refresh();
         }
-
     }
+
 }
