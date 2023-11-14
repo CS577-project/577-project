@@ -17,6 +17,7 @@ public class HeadSynthesize : MonoBehaviour
     public MeshRenderer HeadMesh;
 
     public Texture2D StylizedImage;
+    public Texture2D MainTex;
 
     public Texture2D NewHeadTexture;
     public Texture2D OrigHeadTexture;
@@ -75,6 +76,8 @@ public class HeadSynthesize : MonoBehaviour
             return;
         }
         OrigHeadTexture = (Texture2D)HeadMesh.sharedMaterial.GetTexture("_MainTex");
+        Material BaseInstMat = GameObject.Instantiate(HeadMesh.sharedMaterial);
+        HeadMesh.sharedMaterial = BaseInstMat;
         HeadMesh.sharedMaterial.SetTexture("_MainTex", NewHeadTexture);
     }
     public void ResetHeadTexture()

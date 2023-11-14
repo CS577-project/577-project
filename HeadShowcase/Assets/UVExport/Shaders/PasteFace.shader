@@ -35,7 +35,7 @@
                 v2f o;
                 // render the mesh normally
                 o.pos = UnityObjectToClipPos(v.pos);
-                o.pos2 = o.pos;
+                o.pos2 = v.pos;
                 return o;
             }
 
@@ -45,10 +45,27 @@
             float4 frag (v2f i) : SV_Target
             {
                 // posInClip:[-1,1] -> [0,1]
-                float2 uv = (i.pos2 + float2(1,1)) * 0.5;
+                float4 uv4 = UnityObjectToClipPos(i.pos2);
+                float2 uv = uv4.xy / uv4.w;
+                // [-1,1]->[0,1]
+                uv = (uv + float2(1,1)) * 0.5;
                 uv.y = 1 - uv.y;
                 float4 col = tex2D( _MainTex, uv);
                 //return float4(0, uv.y, 0,1);
+                //float x = uv.x / uv.w;      
+                //float y = uv.y / uv.w;
+                //if(x < -1)
+                //{
+                //    return float4(1, 0, 0, 1);
+                //}
+                //else if(x >= -1 && x <= 1 )
+                //{
+                //    return float4(0, 1, 0, 1);
+                //}
+                //else
+                //{
+                //    return float4(0, 0, 1, 0);
+                //}
                 return col;
                 
             }

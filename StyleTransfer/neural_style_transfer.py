@@ -160,7 +160,7 @@ if __name__ == "__main__":
     #
     default_resource_dir = os.path.join(os.path.dirname(__file__), "..", "Images")
     content_images_dir = os.path.join(default_resource_dir, 'content-images')
-    style_images_dir = os.path.join(default_resource_dir, 'cartoon')
+    style_images_dir = os.path.join(default_resource_dir, 'style-images')
     
     output_img_dir = os.path.join(default_resource_dir, 'styletransfer-output')
     
@@ -172,12 +172,12 @@ if __name__ == "__main__":
     #
     parser = argparse.ArgumentParser()
     parser.add_argument("--content_img_name", type=str, help="content image name", default='HeadBase.jpg')
-    parser.add_argument("--style_img_name", type=str, help="style image name", default='0000.jpg')
+    parser.add_argument("--style_img_name", type=str, help="style image name", default='candy.jpg')
     parser.add_argument("--height", type=int, help="height of content and style images", default=400)
 
     parser.add_argument("--content_weight", type=float, help="weight factor for content loss", default=1e5)
-    parser.add_argument("--style_weight", type=float, help="weight factor for style loss", default=1)
-    parser.add_argument("--tv_weight", type=float, help="weight factor for total variation loss", default=1)
+    parser.add_argument("--style_weight", type=float, help="weight factor for style loss", default=1e2)
+    parser.add_argument("--tv_weight", type=float, help="weight factor for total variation loss", default=1e2)
 
     parser.add_argument("--optimizer", type=str, choices=['lbfgs', 'adam'], default='adam')
     parser.add_argument("--model", type=str, choices=['vgg16', 'vgg19'], default='vgg19')

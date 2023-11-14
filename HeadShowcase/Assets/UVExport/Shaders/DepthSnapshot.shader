@@ -19,6 +19,8 @@ Shader"Custom/DepthSnapshot"
             struct v2f
             {
                 float4 pos : POSITION;
+                float3 viewpos : TEXCOORD0;
+                float depth : TEXCOORD1;
             };
             
 
@@ -26,12 +28,12 @@ Shader"Custom/DepthSnapshot"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.pos);
+                o.viewpos = UnityObjectToViewPos(v.pos);
                 return o;
             }
-            float frag(v2f i) : SV_TARGET
+            float4 frag(v2f i) : SV_TARGET
             {
-                float depth = i.pos.z / i.pos.w;
-                return Linear01Depth(depth);
+                return float4(-i.viewpos.z, 0, 0, 1);
             }
             ENDCG
         }

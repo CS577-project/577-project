@@ -4,9 +4,9 @@ Shader"Custom/SynthesizeStyle"
 {
     Properties
     {
-        _StyleImage("Texture", 2D) = "black" {}
-        _MainTex ("Texture", 2D) = "white" {}
-        _DepthTex("Texture", 2D) = "black" {}
+        _StyleImage("Style Image", 2D) = "black" {}
+        _MainTex ("Main Texture", 2D) = "white" {}
+        _DepthTex("Depth Texture", 2D) = "black" {}
     }
     SubShader
     {
@@ -34,8 +34,8 @@ Shader"Custom/SynthesizeStyle"
             {
                 float4 vertex : SV_POSITION;
                 float2 uv : TEXCOORD0;
-                float4 posInClip : TEXCOORD1;
-                float4 posInView :TEXCOORD2;
+                float3 posInView : TEXCOORD1;
+                float4 posInModel :TEXCOORD2;
             };
 
             /// unwrap the mesh to the clip space by uv
@@ -44,13 +44,13 @@ Shader"Custom/SynthesizeStyle"
             {
                 v2f o;
                 //float4 pos = UnityObjectToClipPos(v.vertex);
+                // [0,1] -> [-1,1]
                 o.vertex = float4(v.uv * 2 - float2(1,1), 1, 1);
+                // flip v coordinate
                 o.vertex.y *= -1;
+                o.posInModel = v.vertex;
+                o.posInView = UnityObjectToViewPos(v.vertex);
                 o.uv = v.uv;
-                // unwrap UV to clip space
-                float4 pos = UnityObjectToClipPos(v.vertex);
-                o.posInClip = pos;
-                o.posInView = mul(UNITY_MATRIX_M, v.vertex);
 
                 return o;
             }
@@ -61,27 +61,24 @@ Shader"Custom/SynthesizeStyle"
             // transform the lerped pos in clip to uv, and sample from Style Image
             float4 frag (v2f i) : SV_Target
             {
+                float4 pos_clip = UnityObjectToClipPos(i.posInModel);
+                // divide w to get the NDP range:[-1,1]
+                float2 uv = pos_clip.xy / pos_clip.w;
                 // posInClip:[-1,1] -> [0,1]
-                float2 uv_2 = (mul(UNITY_MATRIX_VP,i.posInView).xy + float2(1.0,1.0)) * 0.5;
-                uv_2.y *= -1;
-                float2 uv = i.posInClip + float2(1, 1) * 0.5;
-                uv.y *= -1;
-                float4 col = tex2D(_StyleImage, uv_2);
-                //float depth = i.posInClip.z / i.posInClip.w;
-                //depth = Linear01Depth(depth);
-                //float4 depthf4 = tex2D(_DepthImage, uv_2);                
-                //float saved_depth = depthf4.r;
-                //if(depth > saved_depth)
-                //{
-                //    return float4(1,0,0,1);                    
-                //}
-                //else
-                //{
-                //    return col;
-                //}
-                return col;
-                
-            }
+                uv = (uv + float2(1, 1)) * 0.5;
+                // flip v
+                uv.y = 1 - uv.y;
+                float depth = -i.posInView.z;
+                float saved_depth = tex2D(_DepthImage, uv);
+                if(depth > saved_depth+0.001f)
+                {
+                    return tex2D(_MainTex, i.uv);
+                }
+                else
+                {
+                    return tex2D(_StyleImage, uv);
+                }
+            }           
             ENDCG
         }
     }

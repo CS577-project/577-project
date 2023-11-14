@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.45140058, g: 0.5008933, b: 0.57234126, a: 1}
+  m_IndirectSpecularColor: {r: 0.4514011, g: 0.5008941, b: 0.57234246, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -348,6 +348,7 @@ GameObject:
   - component: {fileID: 330283211}
   - component: {fileID: 330283214}
   - component: {fileID: 330283215}
+  - component: {fileID: 330283216}
   m_Layer: 0
   m_Name: DepthCamera
   m_TagString: Untagged
@@ -411,7 +412,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 217926d807bf1ed43b629e77f6ece344, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: bada6829e3faf43b9b2caf2c17073fee, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -454,7 +455,8 @@ MonoBehaviour:
   SynthesizeRT: {fileID: 8400000, guid: bada6829e3faf43b9b2caf2c17073fee, type: 2}
   SynthesizeMaterial: {fileID: 2100000, guid: 874f0128d3bf2294bb516e5549108fc4, type: 2}
   HeadMesh: {fileID: 1977901654}
-  StylizedImage: {fileID: 2800000, guid: 21917738b490bda4eae62c3593ba9091, type: 3}
+  StylizedImage: {fileID: 2800000, guid: 964b97fbc8299db47974e3c845546fbe, type: 3}
+  MainTex: {fileID: 2800000, guid: e9783b074ae57f545bb2d3da7958d820, type: 3}
   NewHeadTexture: {fileID: 2800000, guid: 2ed3cec6e721a49758b520b1163b6fe5, type: 3}
   OrigHeadTexture: {fileID: 2800000, guid: e9783b074ae57f545bb2d3da7958d820, type: 3}
 --- !u!114 &330283215
@@ -464,7 +466,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330283210}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 949f6327ff5e13945bcd81ce31cdc7d1, type: 3}
   m_Name: 
@@ -472,6 +474,21 @@ MonoBehaviour:
   UnwrapUVMaterial: {fileID: 2100000, guid: c9ca4be90f8cd470e9fc700ca27be41b, type: 2}
   UnwrapUVRT: {fileID: 8400000, guid: 217926d807bf1ed43b629e77f6ece344, type: 2}
   HeadMesh: {fileID: 1977901654}
+--- !u!114 &330283216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330283210}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918202262bee74d9189295c28ef57e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HeadMesh: {fileID: 1977901654}
+  PasteFaceMat: {fileID: 2100000, guid: 1529557531517402e9f1d4c9628aeefb, type: 2}
+  PasteFaceRT: {fileID: 8400000, guid: 217926d807bf1ed43b629e77f6ece344, type: 2}
 --- !u!1 &339482331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,6 +1411,87 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1420771283}
   m_CullTransparentMesh: 0
+--- !u!21 &1487392732
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MatBaseOnlyMat(Clone)
+  m_Shader: {fileID: 4800000, guid: 02dde3cdf9e1c994ab93db061be94632, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2ed3cec6e721a49758b520b1163b6fe5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DstBlend: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Metallic: 0
+    - _Mode: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _UVSec: 0
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1579118464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1898,7 +1996,7 @@ PrefabInstance:
     - target: {fileID: 773630103219862080, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 1529557531517402e9f1d4c9628aeefb, type: 2}
+      objectReference: {fileID: 1487392732}
     - target: {fileID: 1333252914900487836, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_Name
       value: Face (1)
