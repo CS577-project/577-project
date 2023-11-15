@@ -60,12 +60,17 @@ public class HeadSynthesize : MonoBehaviour
 
     private void DoSynthesize( Camera cam )
     {
+        Graphics.Blit(MainTex, SynthesizeRT);
         Material runtime_mat = GameObject.Instantiate(SynthesizeMaterial);
         runtime_mat.SetTexture("_StyleImage", StylizedImage);
         runtime_mat.SetTexture("_DepthImage", DepthRT);
         HeadMesh.sharedMaterial = runtime_mat;
+        // don't clear anything, I need the main tex color in Synthesize RenderTexture
+        CameraClearFlags clear_flags = cam.clearFlags;
+        cam.clearFlags = CameraClearFlags.Nothing;
         cam.targetTexture = SynthesizeRT;
         cam.Render();
+        cam.clearFlags = clear_flags;
         
 
     }
