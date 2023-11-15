@@ -44,8 +44,8 @@ public class HeadSynthesize : MonoBehaviour
             // now let's do the synthesize
             DoSynthesize(cam);
             // save the result
-            string filepath = UtilFuncs.GetSaveDir("HeadBaseUV.jpg");
-            UtilFuncs.SaveTexture(cam, SynthesizeRT, filepath);
+            string filepath = UtilFuncs.GetSaveDir("HeadBaseUV.png");
+            UtilFuncs.SaveTexturePNG(cam, SynthesizeRT, filepath);
             HeadMesh.sharedMaterial = mat_before;
 
             AssetDatabase.Refresh();

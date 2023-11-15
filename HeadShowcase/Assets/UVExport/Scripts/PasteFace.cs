@@ -33,7 +33,7 @@ public class PasteFace : MonoBehaviour
             HeadMesh.sharedMaterial = mat_before;
 
             string filepath = UtilFuncs.GetSaveDir("PasteFaceResult.jpg");
-            UtilFuncs.SaveTexture(cam, PasteFaceRT, filepath);
+            UtilFuncs.SaveTextureJPG(cam, PasteFaceRT, filepath);
             AssetDatabase.Refresh();
         }
 

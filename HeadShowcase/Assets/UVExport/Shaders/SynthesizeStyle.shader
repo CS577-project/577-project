@@ -70,13 +70,16 @@ Shader"Custom/SynthesizeStyle"
                 uv.y = 1 - uv.y;
                 float depth = -i.posInView.z;
                 float saved_depth = tex2D(_DepthImage, uv);
+                float4 maintex_col = tex2D(_MainTex, i.uv);
                 if(depth > saved_depth+0.001f)
                 {
-                    return tex2D(_MainTex, i.uv);
+                    return maintex_col;
                 }
                 else
                 {
-                    return tex2D(_StyleImage, uv);
+                    float4 col = tex2D(_StyleImage, uv);
+                    col.a = maintex_col.a;
+                    return col;
                 }
             }           
             ENDCG

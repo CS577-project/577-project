@@ -38,7 +38,7 @@ public class HeadSnapshot : MonoBehaviour
         cam.targetTexture = BaseColorRT;
         cam.Render();
         string filepath = UtilFuncs.GetSaveDir("HeadBase.jpg");
-        UtilFuncs.SaveTexture(cam, BaseColorRT, filepath);
+        UtilFuncs.SaveTextureJPG(cam, BaseColorRT, filepath);
     }
    
 }

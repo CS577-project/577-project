@@ -33,7 +33,7 @@ public class HeadUnwrapUV : MonoBehaviour
             HeadMesh.sharedMaterial = mat_before;
 
             string filepath = UtilFuncs.GetSaveDir("UnwrappedFaceTexture.jpg");
-            UtilFuncs.SaveTexture(cam, UnwrapUVRT, filepath);
+            UtilFuncs.SaveTextureJPG(cam, UnwrapUVRT, filepath);
             AssetDatabase.Refresh();
         }
     }
