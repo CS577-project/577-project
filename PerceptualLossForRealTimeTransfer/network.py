@@ -34,6 +34,7 @@ class ConvLayer(nn.Module):
         super(ConvLayer, self).__init__()
         
         # padding
+        # //2 是整除， 如果kernel是9x9，那么padding就是4。若stride=1，则是不改变图像尺寸
         if pad == 'reflect':            
             self.pad = nn.ReflectionPad2d(kernel_size//2)
         elif pad == 'zero':
@@ -55,6 +56,7 @@ class ConvLayer(nn.Module):
         else:
             raise NotImplementedError("Not expected activation flag !!!")
 
+        # 这里用的instance norm，跟原论文不太一致，不过也没太大所谓
         # normalization 
         if normalization == 'instance':            
             self.normalization = nn.InstanceNorm2d(out_ch, affine=True)
