@@ -1,7 +1,7 @@
 import torch
 
 from network import TransformNetwork
-from image_utils import imload, imsave
+from image_utils import imload, imsave, ConfigureDevice
 
 def load_transform_network(args):
     transform_network = TransformNetwork()
@@ -9,7 +9,7 @@ def load_transform_network(args):
     return transform_network
 
 def network_test(args):
-    device = torch.device("cuda" if args.cuda_device_no >= 0 else 'cpu')
+    device = ConfigureDevice()
 
     transform_network = load_transform_network(args)
     transform_network = transform_network.to(device)

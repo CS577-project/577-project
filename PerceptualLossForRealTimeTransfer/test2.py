@@ -11,22 +11,52 @@
 # %%
 from main import build_parser
 from train import network_train
+from test import network_test
+import os
+
+# 当前目录
+#current_directory = os.path.dirname(os.path.abspath(__file__))
+current_directory = os.getcwd()
+
 
 # %%
 # 训练模式
+
 parser = build_parser()
-#parser.Namespace()
+content_imagedir = os.path.join(current_directory, "../Images/original/")
+style_imagepath = os.path.join(current_directory, "../Images/style-images/candy.jpg")
 custom_args = [
     "--train-flag", "True",
-    "--train-content", "../Images/original",
-    "--train-style", "../Images/style-images/candy.jpg"
+    "--train-content", content_imagedir,
+    "--train-style", style_imagepath,
+    "--content-weight", "10",
+    "--style-weight", "30",
+    "--tv-weight", "3",
+    "--max-iter", "5000"
 ]
 args = parser.parse_args(custom_args)
 print(args)
 
 transform_network = network_train(args)
 
-# %%
+# %% [markdown]
+# 现在开始测试
 
+# %%
+parser = build_parser()
+model_path = os.path.join(current_directory, "trained_models/transform_network.pth")
+test_imagepath = os.path.join(current_directory, "../Images/content-images/HeadBase.jpg")
+output_imagepath = os.path.join(current_directory, "../Images/styletransfer-output/HeadBaseTransfered.jpg")
+custom_args = [
+    "--model-load-path", model_path,
+    "--test-content", test_imagepath,
+    "--output", output_imagepath
+]
+
+network_test(args)
+
+
+# %%
+print(model_path)
 
 
