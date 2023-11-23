@@ -4,9 +4,10 @@ Shader"Custom/SynthesizeStyle"
 {
     Properties
     {
-        _StyleImage("Style Image", 2D) = "black" {}
+        _StyleTex("Style Image", 2D) = "black" {}
         _MainTex ("Main Texture", 2D) = "white" {}
         _DepthTex("Depth Texture", 2D) = "black" {}
+        _MaskTex("Mask Image", 2D) = "black" {}
     }
     SubShader
     {
@@ -28,7 +29,6 @@ Shader"Custom/SynthesizeStyle"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
-                float3 normal :NORMAL;
             };
 
             struct v2f
@@ -37,7 +37,6 @@ Shader"Custom/SynthesizeStyle"
                 float2 uv : TEXCOORD0;
                 float3 posInView : TEXCOORD1;
                 float4 posInModel :TEXCOORD2;
-                float3 normal :NORMAL;
             };
 
             /// unwrap the mesh to the clip space by uv
@@ -53,15 +52,14 @@ Shader"Custom/SynthesizeStyle"
                 o.posInModel = v.vertex;
                 o.posInView = UnityObjectToViewPos(v.vertex);
                 o.uv = v.uv;
-                half3 wNormal = UnityObjectToWorldNormal(v.normal);
-                o.normal = mul((float3x3)UNITY_MATRIX_V, wNormal);
 
                 return o;
             }
 
-            sampler2D _StyleImage;
-            sampler2D _DepthImage;
+            sampler2D _StyleTex;
+            sampler2D _DepthTex;
             sampler2D _MainTex;
+            sampler2D _MaskTex;
             // transform the lerped pos in clip to uv, and sample from Style Image
             float4 frag (v2f i) : SV_Target
             {
@@ -74,42 +72,28 @@ Shader"Custom/SynthesizeStyle"
                 uv.y = 1 - uv.y;
                 // depth test
                 float depth = -i.posInView.z;
-                float saved_depth = tex2D(_DepthImage, uv);
+                float saved_depth = tex2D(_DepthTex, uv);
                 float4 maintex_col = tex2D(_MainTex, i.uv);
-                if(depth > saved_depth+0.001f)
+                float mask = tex2D(_MaskTex, uv);
+                //return float4(mask, 0, 0, 1);
+                if (depth > saved_depth + 0.001f)
                 {
                     return maintex_col;
                 }
                 else
                 {
-                    // calculate if the normal is not pointing to view vector
-                    // which means it is the edge of the mesh from viewpoint
-                    float val = dot(i.normal, (0,0,-1));
-                    val = -val;
-                    val = clamp(val, 0, 1);
-                    // threshold for edge
-                    float threshold = 0.001;
-                    // if 
-                    if(val < threshold)
+                    // if it is the edge, then the sampler sample it bilerp, we use the mask as the alpha
+                    float4 col = tex2D(_StyleTex, uv);
+                    float modified_mask = pow(mask, 3);
+                    if(modified_mask < 0.1)
                     {
-                        //it's edge
-                        float4 col = tex2D(_StyleImage, uv);
-                        float lerp_alpha = val / threshold;
-                        col = lerp(maintex_col, col, lerp_alpha);
-                        col.a = maintex_col.a;
-                        return col;
+                        modified_mask = 0;
                     }
-                    else
-                    {
-                        //it's not edge
-                        float4 col = tex2D(_StyleImage, uv);
-                        col.a = maintex_col.a;
-                        return col;
-                    }
-                    
-                    
+                    col = lerp(maintex_col, col, modified_mask);
+                    col.a = maintex_col.a;
+                    return col;
                 }
-            }           
+}           
             ENDCG
         }
     }

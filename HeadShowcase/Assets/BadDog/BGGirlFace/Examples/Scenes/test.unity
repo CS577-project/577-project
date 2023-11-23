@@ -381,7 +381,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -452,10 +452,12 @@ MonoBehaviour:
   ExportPath: Assets/UVExport/Output
   DepthRT: {fileID: 8400000, guid: 2ef0d4d17a367454390cf6a2f661c1de, type: 2}
   DepthMaterial: {fileID: 2100000, guid: ecb10f90f3ac0a14abe16cf4e0068160, type: 2}
+  MaskRT: {fileID: 8400000, guid: fd12f459ef0c6f9489509643154bb74d, type: 2}
+  MaskMaterial: {fileID: 2100000, guid: 20d3279899ed044c0a2c6926c28339c9, type: 2}
   SynthesizeRT: {fileID: 8400000, guid: bada6829e3faf43b9b2caf2c17073fee, type: 2}
   SynthesizeMaterial: {fileID: 2100000, guid: 874f0128d3bf2294bb516e5549108fc4, type: 2}
   HeadMesh: {fileID: 1977901654}
-  StylizedImage: {fileID: 2800000, guid: 964b97fbc8299db47974e3c845546fbe, type: 3}
+  StylizedImage: {fileID: 2800000, guid: dc3bc9cbc2dfd754ebfcdb04954c1f68, type: 3}
   MainTex: {fileID: 2800000, guid: e9783b074ae57f545bb2d3da7958d820, type: 3}
   NewHeadTexture: {fileID: 2800000, guid: ca173c405526c449aa6625957325957b, type: 3}
   OrigHeadTexture: {fileID: 2800000, guid: e9783b074ae57f545bb2d3da7958d820, type: 3}
@@ -1569,14 +1571,14 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1723700144}
   m_CullTransparentMesh: 0
---- !u!21 &1822041468
+--- !u!21 &1769894921
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MatBaseOnlyMat(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
+  m_Name: MatBaseOnlyMat(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)(Clone)
   m_Shader: {fileID: 4800000, guid: 02dde3cdf9e1c994ab93db061be94632, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -1996,7 +1998,7 @@ PrefabInstance:
     - target: {fileID: 773630103219862080, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1822041468}
+      objectReference: {fileID: 1769894921}
     - target: {fileID: 1333252914900487836, guid: 10926a002c12f67448d71a0b83eaf9c9, type: 3}
       propertyPath: m_Name
       value: Face (1)
