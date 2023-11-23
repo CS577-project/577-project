@@ -8,8 +8,24 @@ using UnityEngine;
 public class HeadSynthesize : MonoBehaviour
 {
     public string ExportPath;
+    /// <summary>
+    /// render texture for depth
+    /// </summary>
     public RenderTexture DepthRT;
+    /// <summary>
+    /// material for depth
+    /// 
+    /// </summary>
     public Material DepthMaterial;
+
+    /// <summary>
+    /// render texture for mask
+    /// </summary>
+    public RenderTexture MaskRT;
+    /// <summary>
+    /// 
+    /// </summary>
+    public Material MaskMaterial;
 
     public RenderTexture SynthesizeRT;
     public Material SynthesizeMaterial;
@@ -56,6 +72,10 @@ public class HeadSynthesize : MonoBehaviour
         HeadMesh.sharedMaterial = DepthMaterial;
         cam.targetTexture = DepthRT;
         cam.Render();
+    }
+    private void SnapshotMask( Camera cam)
+    {
+
     }
 
     private void DoSynthesize( Camera cam )
