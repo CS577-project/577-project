@@ -152,7 +152,34 @@ def neural_style_transfer(config):
         optimizer.step(closure)
 
     return dump_path
+def BuildArgParser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--content_img_name", type=str, help="content image name", default='HeadBase.jpg')
+    parser.add_argument("--style_img_name", type=str, help="style image name", default='candy.jpg')
+    parser.add_argument("--height", type=int, help="height of content and style images", default=400)
 
+    parser.add_argument("--content_weight", type=float, help="weight factor for content loss", default=1e5)
+    parser.add_argument("--style_weight", type=float, help="weight factor for style loss", default=1e2)
+    parser.add_argument("--tv_weight", type=float, help="weight factor for total variation loss", default=1e2)
+
+    parser.add_argument("--optimizer", type=str, choices=['lbfgs', 'adam'], default='adam')
+    parser.add_argument("--model", type=str, choices=['vgg16', 'vgg19'], default='vgg19')
+    parser.add_argument("--init_method", type=str, choices=['random', 'content', 'style'], default='content')
+    parser.add_argument("--saving_freq", type=int, help="saving frequency for intermediate images (-1 means only final)", default=-1)
+    return parser
+
+def BuildOptimizationConfig(args, content_images_dir, style_images_dir, output_img_dir):
+    
+    img_format = (4, '.jpg')  # saves images in the format: %04d.jpg
+
+    optimization_config = dict()
+    for arg in vars(args):
+        optimization_config[arg] = getattr(args, arg)
+    optimization_config['content_images_dir'] = content_images_dir
+    optimization_config['style_images_dir'] = style_images_dir
+    optimization_config['output_img_dir'] = output_img_dir
+    optimization_config['img_format'] = img_format
+    return optimization_config
 
 if __name__ == "__main__":
     #
