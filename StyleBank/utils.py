@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from PIL import Image
 import torchvision.transforms as transforms
-import args
+
 from time import sleep
 
 def showimg(img):
@@ -25,7 +25,7 @@ class Resize(object):
 		new_size = (int(img.size[0] / m * self.size), int(img.size[1] / m * self.size))
 		return img.resize(new_size, resample=Image.BILINEAR)
 
-def adjust_learning_rate(optimizer, step):
+def adjust_learning_rate(optimizer, step, args):
 	"""
 	Learning rate decay
 	"""

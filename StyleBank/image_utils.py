@@ -18,6 +18,9 @@ denormalize = transforms.Normalize(mean=[-mean/std for mean, std in zip(IMAGENET
 unloader = transforms.ToPILImage()
 
 class ImageFolder(torch.utils.data.Dataset):
+    '''
+    Image Folder，从Perceptual Loss For Real Time Transfer目录粘过来的
+    '''
     def __init__(self, root_path, transform):
         super(ImageFolder, self).__init__()
         

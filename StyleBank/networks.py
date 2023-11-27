@@ -4,14 +4,17 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn.modules import Sequential
 import torchvision.models as models
-import args
+from args import ConfigureDevice
 
-device = args.device
+device = ConfigureDevice()
 # 这里使用vgg16作为pretrained model
-vgg16 = models.vgg16(pretrained=True).features.to(device).eval()
+vgg16 = models.vgg16(weights="IMAGENET1K_V1").features.to(device).eval()
+
 
 class ContentLoss(nn.Module):
-
+	'''
+	content loss是我们预测出来的图在vgg的feature map和content image在vgg的feature map进行比较
+	'''
 	def __init__(self):
 		super(ContentLoss, self).__init__()
 		# we 'detach' the target content from the tree used
@@ -25,10 +28,10 @@ class ContentLoss(nn.Module):
 	def forward(self, input):
 
 		if self.mode == 'loss':
-			# loss模式，使用weight计算当前层与目标的差异
+			# loss模式，使用weight计算当前层与target的差异
 			self.loss = self.weight * F.mse_loss(input, self.target)
 		elif self.mode == 'learn':
-			# 记录target
+			# 训练阶段，把input保存一个副本，存到target里
 			self.target = input.detach()
 		return input
 
@@ -47,7 +50,9 @@ def gram_matrix(input):
 	return G.div(a * b * c * d)
 
 class StyleLoss(nn.Module):
-
+	'''
+	style loss是我们预测出来的图在vgg的feature map和content image在vgg的feature map的gram matrix进行比较
+	'''
 	def __init__(self):
 		super(StyleLoss, self).__init__()
 		self.targets = []
@@ -58,10 +63,10 @@ class StyleLoss(nn.Module):
 		# 首先计算gram matrix
 		G = gram_matrix(input)
 		if self.mode == 'loss':
-			# 计算loss阶段，是把loss算出来
+			# 计算loss阶段，当前的gram matirx与target比较
 			self.loss = self.weight * F.mse_loss(G, self.target)
 		elif self.mode == 'learn':
-			# 训练阶段的target是gram matrix
+			# 训练阶段，计算gram matrix，并保存到target上
 			self.target = G.detach()
 		# 直接把input作为输出
 		return input
@@ -104,6 +109,7 @@ class LossNetwork(nn.Module):
 	def __init__(self):
 		super(LossNetwork, self).__init__()
 		# cnn就是vgg16
+
 		cnn = deepcopy(vgg16)
 		normalization = Normalization().to(device)
 		# just in order to have an iterable access to or list of content/syle
@@ -166,33 +172,45 @@ class LossNetwork(nn.Module):
 		model = model[:(i + 1)]
 
 		self.model = model
+		# 记录下style loss层和content loss层
 		self.style_losses = style_losses
 		self.content_losses = content_losses
 
 	def learn_content(self, input):
+		# content loss设为训练模式，记录传入的数据得到的content feature map
 		for cl in self.content_losses:
 			cl.mode = 'learn'
+		# style loss则什么也不做
 		for sl in self.style_losses:
 			sl.mode = 'nop'
 		self.model(input) # feed image to vgg19
 	
 	def learn_style(self, input):
+		# content loss什么也不做
 		for cl in self.content_losses:
 			cl.mode = 'nop'
+		# style loss则设为训练模式，记录传入的input得到的feature map gram matrix
 		for sl in self.style_losses: 
 			sl.mode = 'learn'
 		self.model(input) # feed image to vgg19
 
 	def forward(self, input, content, style):
+		'''
+		content:(batch_size, 3, w, h)
+		style:(batch_size, 3, w, h)
+		'''
+		# 把content和style的vgg结果，记录到各自的target中
 		self.learn_content(content)
 		self.learn_style(style)
 
+		# 再设置为loss模式，传入我们预测的input，计算content和style loss
 		for cl in self.content_losses:
 			cl.mode = 'loss'
 		for sl in self.style_losses:
 			sl.mode = 'loss'
 		self.model(input) # feed image to vgg19
 
+		# 把这两种loss累加起来
 		content_loss = 0
 		style_loss = 0
 		# 累积所有的loss
@@ -200,7 +218,7 @@ class LossNetwork(nn.Module):
 			content_loss += cl.loss
 		for sl in self.style_losses:
 			style_loss += sl.loss
-
+		# 最后返回
 		return content_loss, style_loss
 
 class StyleBankNet(nn.Module):
@@ -244,7 +262,7 @@ class StyleBankNet(nn.Module):
 			# 图像尺寸翻倍
 			nn.ConvTranspose2d(32, 3, kernel_size=(9, 9), stride=2, padding=(4, 4), bias=False),
 		)
-		# style数量为total_style，各个style有自己的sequential
+		# style数量为total_style，各个style有自己的sequential，不过style bank不修改feature map尺寸，只是为了调整 style
 		self.style_bank = nn.ModuleList([
 			Sequential(
 				nn.Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False),
@@ -258,6 +276,8 @@ class StyleBankNet(nn.Module):
 		
 	def forward(self, X, style_id=None):
 		# 进入encoder
+		# X:(batch_size, 3, w, h)
+		# z:(batch_size, 256, w/4, h/4)
 		z = self.encoder_net(X)
 		# 遍历各个style，一张图片经过风格变换后，进入decoder
 		# style也是同时训练多个，style_id的数量与当前X batch size想同
@@ -265,8 +285,14 @@ class StyleBankNet(nn.Module):
 			new_z = []
 			for idx, i in enumerate(style_id):
 				# 一张content image对应一个style bank
-				zs = self.style_bank[i](z[idx].view(1, *z[idx].shape))
+				batch_curz = z[idx].view(1, *z[idx].shape)
+				# zs:(1, 256, w/4,h/4)
+				zs = self.style_bank[i](batch_curz)
 				new_z.append(zs)
+			# 在batch维度拼接起来，形成一个batch
+			# z:(batch_size, 256, w/4,h/4)
 			z = torch.cat(new_z, dim=0)
 			# z = self.bank_net(z)
-		return self.decoder_net(z)
+		# result(batch_size, 3, w, h)
+		result = self.decoder_net(z)
+		return result
