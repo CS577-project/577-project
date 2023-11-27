@@ -35,6 +35,7 @@ def adjust_learning_rate(optimizer, step):
 	return lr
 
 def get_sid_batch(style_id_seg, batch_size):
+	# 一张content对应一个style id，在content的batch_size内循环对应上
 	ret = style_id_seg
 	while len(ret) < batch_size:
 		ret += style_id_seg
@@ -43,6 +44,7 @@ def get_sid_batch(style_id_seg, batch_size):
 
 content_img_transform = transforms.Compose([
 	Resize(513),
+	# 随机切片
 	transforms.RandomCrop([513, 513]),
 	transforms.ToTensor(),
 ])
