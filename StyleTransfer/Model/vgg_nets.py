@@ -54,7 +54,9 @@ class Vgg16Experimental(torch.nn.Module):
         super().__init__()
         vgg_pretrained_features = models.vgg16(pretrained=True, progress=show_progress).features
         self.layer_names = ['relu1_1', 'relu2_1', 'relu2_2', 'relu3_1', 'relu3_2', 'relu4_1', 'relu4_3', 'relu5_1']
+        # content feature map
         self.content_feature_maps_index = 4
+        # style feature map
         self.style_feature_maps_indices = list(range(len(self.layer_names)))  # all layers used for style representation
 
         self.conv1_1 = vgg_pretrained_features[0]
