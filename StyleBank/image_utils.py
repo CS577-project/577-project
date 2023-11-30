@@ -23,7 +23,7 @@ class ImageFolder(torch.utils.data.Dataset):
     '''
     def __init__(self, root_path, transform):
         super(ImageFolder, self).__init__()
-        
+        # 这里对文件名进行了排序
         self.file_names = sorted(os.listdir(root_path))
         self.root_path = root_path        
         self.transform = transform

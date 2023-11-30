@@ -109,7 +109,6 @@ class LossNetwork(nn.Module):
 	def __init__(self):
 		super(LossNetwork, self).__init__()
 		# cnn就是vgg16
-
 		cnn = deepcopy(vgg16)
 		normalization = Normalization().to(device)
 		# just in order to have an iterable access to or list of content/syle

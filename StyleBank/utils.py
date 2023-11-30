@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from PIL import Image
 import torchvision.transforms as transforms
-
+import torchvision
 from time import sleep
 
 def showimg(img):
@@ -12,6 +12,11 @@ def showimg(img):
 	img = img.cpu().numpy().transpose(1, 2, 0)
 	plt.imshow(img)
 	plt.show()
+
+def saveimg(img, path):
+	img = img.clamp(min=0, max=1)
+	torchvision.utils.save_image(img, path)
+
 
 class Resize(object):
 	"""
