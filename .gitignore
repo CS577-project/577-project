@@ -13,3 +13,6 @@ UserSettings
 .suo
 .vsidx
 .vs
+trained_models
+weights
+output

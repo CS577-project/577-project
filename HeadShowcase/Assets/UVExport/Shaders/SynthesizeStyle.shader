@@ -4,9 +4,10 @@ Shader"Custom/SynthesizeStyle"
 {
     Properties
     {
-        _StyleImage("Style Image", 2D) = "black" {}
+        _StyleTex("Style Image", 2D) = "black" {}
         _MainTex ("Main Texture", 2D) = "white" {}
         _DepthTex("Depth Texture", 2D) = "black" {}
+        _MaskTex("Mask Image", 2D) = "black" {}
     }
     SubShader
     {
@@ -55,9 +56,10 @@ Shader"Custom/SynthesizeStyle"
                 return o;
             }
 
-            sampler2D _StyleImage;
-            sampler2D _DepthImage;
+            sampler2D _StyleTex;
+            sampler2D _DepthTex;
             sampler2D _MainTex;
+            sampler2D _MaskTex;
             // transform the lerped pos in clip to uv, and sample from Style Image
             float4 frag (v2f i) : SV_Target
             {
@@ -68,20 +70,30 @@ Shader"Custom/SynthesizeStyle"
                 uv = (uv + float2(1, 1)) * 0.5;
                 // flip v
                 uv.y = 1 - uv.y;
+                // depth test
                 float depth = -i.posInView.z;
-                float saved_depth = tex2D(_DepthImage, uv);
+                float saved_depth = tex2D(_DepthTex, uv);
                 float4 maintex_col = tex2D(_MainTex, i.uv);
-                if(depth > saved_depth+0.001f)
+                float mask = tex2D(_MaskTex, uv);
+                //return float4(mask, 0, 0, 1);
+                if (depth > saved_depth + 0.001f)
                 {
                     return maintex_col;
                 }
                 else
                 {
-                    float4 col = tex2D(_StyleImage, uv);
+                    // if it is the edge, then the sampler sample it bilerp, we use the mask as the alpha
+                    float4 col = tex2D(_StyleTex, uv);
+                    float modified_mask = pow(mask, 3);
+                    if(modified_mask < 0.1)
+                    {
+                        modified_mask = 0;
+                    }
+                    col = lerp(maintex_col, col, modified_mask);
                     col.a = maintex_col.a;
                     return col;
                 }
-            }           
+}           
             ENDCG
         }
     }

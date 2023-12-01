@@ -8,8 +8,24 @@ using UnityEngine;
 public class HeadSynthesize : MonoBehaviour
 {
     public string ExportPath;
+    /// <summary>
+    /// render texture for depth
+    /// </summary>
     public RenderTexture DepthRT;
+    /// <summary>
+    /// material for depth
+    /// 
+    /// </summary>
     public Material DepthMaterial;
+
+    /// <summary>
+    /// render texture for mask
+    /// </summary>
+    public RenderTexture MaskRT;
+    /// <summary>
+    /// 
+    /// </summary>
+    public Material MaskMaterial;
 
     public RenderTexture SynthesizeRT;
     public Material SynthesizeMaterial;
@@ -41,6 +57,8 @@ public class HeadSynthesize : MonoBehaviour
             Material mat_before = HeadMesh.sharedMaterial;
             // first snapshot the depth 
             SnapshotDepth(cam);
+            // snapshot the mask
+            SnapshotMask(cam);
             // now let's do the synthesize
             DoSynthesize(cam);
             // save the result
@@ -57,13 +75,22 @@ public class HeadSynthesize : MonoBehaviour
         cam.targetTexture = DepthRT;
         cam.Render();
     }
+    private void SnapshotMask( Camera cam)
+    {
+        cam.clearFlags = CameraClearFlags.SolidColor;
+        cam.backgroundColor = Color.black;
+        HeadMesh.sharedMaterial = MaskMaterial;
+        cam.targetTexture = MaskRT;
+        cam.Render();
+    }
 
     private void DoSynthesize( Camera cam )
     {
         Graphics.Blit(MainTex, SynthesizeRT);
         Material runtime_mat = GameObject.Instantiate(SynthesizeMaterial);
-        runtime_mat.SetTexture("_StyleImage", StylizedImage);
-        runtime_mat.SetTexture("_DepthImage", DepthRT);
+        runtime_mat.SetTexture("_StyleTex", StylizedImage);
+        runtime_mat.SetTexture("_DepthTex", DepthRT);
+        runtime_mat.SetTexture("_MaskTex", MaskRT);
         HeadMesh.sharedMaterial = runtime_mat;
         // don't clear anything, I need the main tex color in Synthesize RenderTexture
         CameraClearFlags clear_flags = cam.clearFlags;
