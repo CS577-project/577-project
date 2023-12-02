@@ -10,7 +10,7 @@ public class UtilFuncs
     /// <returns></returns>
     public static string GetSaveDir( string filename )
     {
-        return Path.Combine("Assets/UVExport/Output", filename);
+        return Path.Combine("Assets/UVExport/StylizedImages", filename);
     }
     /// <summary>
     /// save texture to file
